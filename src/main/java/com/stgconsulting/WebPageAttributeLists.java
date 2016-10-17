@@ -1,5 +1,7 @@
 package com.stgconsulting;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -47,13 +49,20 @@ public class WebPageAttributeLists extends SeleniumWebdriverBaseClass implements
 //        this.allTextOnPage = inputAllTextonPage;
 //    }
 //
-    public List<String> call()throws StaleElementReferenceException, InterruptedException
-    {
+    public List<String> call() throws StaleElementReferenceException, InterruptedException, IOException {
         driver.navigate().to(url);
 
 //        WebDriver driver = new HtmlUnitDriver();
-        WebElement htmlElement = null;
-//        WebElement htmlElement = driver.findElement(By.xpath("/html"));
+//        WebElement htmlElement = null;
+
+        /* Bill's Changes */
+        //WebElement htmlElement = driver.findElement(By.xpath("/html"));
+        Document doc = Jsoup.connect(url).get();
+        String bodyText = doc.body().text();
+        System.out.println("Web Site Text: \n" + bodyText);
+        /* End of Bill's Changes */
+
+
 ////    WebElement htmlElement = driver.findElement(By.tagName("html"));
         String allTextOnPage = null;
         List<WebElement> anchorTags = null;
@@ -71,7 +80,7 @@ public class WebPageAttributeLists extends SeleniumWebdriverBaseClass implements
         try
         {
 //            driver.navigate().refresh();
-        htmlElement = driver.findElement(By.xpath("/html"));
+//        htmlElement = driver.findElement(By.xpath("/html"));
 //        allTextOnPage = htmlElement.getText();
 
             for (WebElement anchorTagElement : anchorTags)
